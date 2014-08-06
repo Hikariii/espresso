@@ -5,15 +5,15 @@
     "license": "MIT",
     "require": {
         "php": ">=5.3.3",
-        "react/http": "0.2.*",
-        "silex/silex": "1.0.*@dev"
+        "react/http": "0.4.*",
+        "silex/silex": "2.0.*@dev"
     },
     "autoload": {
         "psr-0": { "React\\Espresso": "src" }
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.2-dev"
+            "dev-master": "0.3-dev"
         }
     }
 }
