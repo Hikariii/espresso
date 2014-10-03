@@ -8,13 +8,23 @@ use Symfony\Component\HttpFoundation\StreamedResponse as SymfonyStreamedResponse
 
 class ControllerCollection extends BaseControllerCollection
 {
-    public function match($pattern, $to)
+    /**
+     * @param string $pattern
+     * @param null $to
+     * @return \Silex\Controller
+     */
+    public function match($pattern, $to = null)
     {
+        $to = (null === $to ? $this->defaultController : $to);
         $wrapped = $this->wrapController($to);
 
         return parent::match($pattern, $wrapped);
     }
 
+    /**
+     * @param $controller
+     * @return callable
+     */
     private function wrapController($controller)
     {
         return function (Request $sfRequest) use ($controller) {
