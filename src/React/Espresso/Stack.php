@@ -10,6 +10,8 @@ class Stack extends \Pimple\Container
 {
     public function __construct($app)
     {
+        parent::__construct($app);
+
         $this['loop'] = function () {
             return Factory::create();
         };
