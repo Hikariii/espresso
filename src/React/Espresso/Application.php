@@ -10,9 +10,14 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class Application extends BaseApplication
 {
-    public function __construct()
+    /**
+     * @param array $values
+     */
+    public function __construct(array $values = array())
     {
-        parent::__construct();
+        $this['handle_exceptions'] = true;
+
+        parent::__construct($values);
 
         $app = $this;
 
@@ -21,12 +26,21 @@ class Application extends BaseApplication
         };
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     */
     public function __invoke(Request $request, Response $response)
     {
         $sfRequest = $this->buildSymfonyRequest($request, $response);
-        $this->handle($sfRequest, HttpKernelInterface::MASTER_REQUEST, false);
+        $this->handle($sfRequest, HttpKernelInterface::MASTER_REQUEST, $this['handle_exceptions']);
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return SymfonyRequest
+     */
     private function buildSymfonyRequest(Request $request, Response $response)
     {
         $sfRequest = SymfonyRequest::create($request->getPath(), $request->getMethod());
