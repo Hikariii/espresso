@@ -8,9 +8,9 @@ use React\Http\Server as HttpServer;
 
 class Stack extends \Pimple\Container
 {
-    public function __construct($app)
+    public function __construct($app, array $values = array())
     {
-        parent::__construct($app);
+        parent::__construct($values);
 
         $this['loop'] = function () {
             return Factory::create();
