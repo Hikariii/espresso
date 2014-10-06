@@ -7,6 +7,7 @@ use React\Http\Response;
 use Silex\Application as BaseApplication;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 class Application extends BaseApplication
 {
@@ -15,7 +16,7 @@ class Application extends BaseApplication
      */
     public function __construct(array $values = array())
     {
-        $this['handle_exceptions'] = true;
+        $this['handle_exceptions'] = false;
 
         parent::__construct($values);
 
@@ -24,6 +25,18 @@ class Application extends BaseApplication
         $this['controllers_factory'] = function () use ($app) {
             return new ControllerCollection($app['route_factory']);
         };
+    }
+
+    /**
+     * Registers an error handler.
+     *
+     * @param mixed $callback Error handler callback, takes an Exception argument
+     * @param int   $priority The higher this value, the earlier an event
+     *                        listener will be triggered in the chain (defaults to -8)
+     */
+    public function error($callback, $priority = -8)
+    {
+        $this->on(KernelEvents::EXCEPTION, new ExceptionListenerWrapper($this, $callback), $priority);
     }
 
     /**
