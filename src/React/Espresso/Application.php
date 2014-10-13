@@ -25,6 +25,10 @@ class Application extends BaseApplication
         $this['controllers_factory'] = function () use ($app) {
             return new ControllerCollection($app['route_factory']);
         };
+
+        $this['closure_factory'] = function () use ($app) {
+            return new ExceptionClosureFactory($app);
+        };
     }
 
     /**
@@ -36,6 +40,7 @@ class Application extends BaseApplication
      */
     public function error($callback, $priority = -8)
     {
+        $this['closure_factory']->setErrorController($callback);
         $this->on(KernelEvents::EXCEPTION, new ExceptionListenerWrapper($this, $callback), $priority);
     }
 
