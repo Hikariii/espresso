@@ -4,7 +4,7 @@
     "keywords": ["microframework"],
     "license": "MIT",
     "require": {
-        "php": ">=5.3.3",
+        "php": ">=7",
         "react/http": "0.4.*",
         "silex/silex": "2.0.*@dev"
     },

@@ -59,23 +59,23 @@ class ExceptionClosureFactory
             {
                 $args = func_get_args();
                 return call_user_func_array($callable, $args);
-            } catch (\Exception $exception)
+            } catch (\Throwable $error)
             {
-                return $this->callErrorHandler($exception, $request, $response);
+                return $this->callErrorHandler($error, $request, $response);
             }
         };
     }
 
     /**
-     * @param \Exception $exception
+     * @param \Throwable $error
      * @param Request $request
      * @param Response $response
      * @return mixed
      */
-    public function callErrorHandler(\Exception $exception, Request $request, Response $response)
+    public function callErrorHandler(\Throwable $error, Request $request, Response $response)
     {
-        $code = $exception instanceof HttpExceptionInterface ? $exception->getStatusCode() : 500;
-        $args = [$exception, $request, $response, $code];
+        $code = $error instanceof HttpExceptionInterface ? $error->getStatusCode() : 500;
+        $args = [$error, $request, $response, $code];
         return call_user_func_array($this->errorContoller, $args);
     }
 }
